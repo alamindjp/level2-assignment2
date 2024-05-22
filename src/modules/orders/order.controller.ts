@@ -2,23 +2,67 @@ import { orderServices } from './order.services';
 import { Request, Response } from 'express';
 import zodValidationOrder from './order.validation';
 import mongoose from 'mongoose';
+import { productServices } from '../products/product.service';
 
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
-    const validOrderData = zodValidationOrder.parse(orderData);
-    const result = await orderServices.createOrder(validOrderData);
-    res.status(200).json({
-      success: true,
-      message: 'Order created successfully!',
-      data: result,
-    });
+    const { productId } = req.body;
+    const { quantity } = req.body;
+    const getOrderingProduct =
+      await productServices.getSingleProduct(productId);
+
+    const inStock = getOrderingProduct?.inventory.inStock as boolean;
+    const stockQuantity = getOrderingProduct?.inventory.quantity as number;
+    if (mongoose.Types.ObjectId.isValid(productId)) {
+      if (inStock) {
+        if (stockQuantity > quantity) {
+          const validOrderData = zodValidationOrder.parse(orderData);
+          const result = await orderServices.createOrder(validOrderData);
+          const updateProductQuantity = stockQuantity - quantity;
+
+          await productServices.updateField(productId, updateProductQuantity);
+          res.status(200).json({
+            success: true,
+            message: 'Order created successfully!',
+            data: result,
+          });
+        } else {
+          res.status(200).json({
+            success: true,
+            message: 'Insufficient quantity available in inventory',
+            data: null,
+          });
+        }
+      } else {
+        res.status(500).json({
+          success: true,
+          message: 'Ordering products is stock out',
+          data: null,
+        });
+      }
+    } else {
+      await productServices.getSingleProduct(productId);
+      res.status(500).json({
+        success: false,
+        message: 'Product not found!',
+        data: null,
+      });
+    }
+    // const orderData = req.body;
+    // const validOrderData = zodValidationOrder.parse(orderData);
+    // const result = await orderServices.createOrder(validOrderData);
+    // res.status(200).json({
+    //   success: true,
+    //   message: 'Order created successfully!',
+    //   data: result,
+    // });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: err,
+      error: err.massage,
     });
   }
 };

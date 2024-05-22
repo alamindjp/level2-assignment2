@@ -39,9 +39,19 @@ const updateSingleProduct = (id, updatedData) => __awaiter(void 0, void 0, void 
     const result = yield product_model_1.Product.updateOne({ _id: id }, updatedData);
     return result;
 });
-const updateField = (id, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
+const updateProductInventory = (id, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.Product.updateOne({ _id: id }, updatedData);
     return result;
+});
+const updateField = (id, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
+    if (updatedData === 0) {
+        const result = yield product_model_1.Product.updateOne({ _id: id }, { $set: { inventory: { quantity: updatedData, inStock: true } } });
+        return result;
+    }
+    else {
+        const result = yield product_model_1.Product.updateOne({ _id: id }, { $set: { inventory: { quantity: updatedData, inStock: true } } });
+        return result;
+    }
 });
 const deleteSingleProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.Product.deleteOne({ _id: id });
@@ -54,4 +64,5 @@ exports.productServices = {
     deleteSingleProduct,
     updateSingleProduct,
     updateField,
+    updateProductInventory,
 };

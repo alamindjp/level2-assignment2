@@ -1,4 +1,4 @@
-import { TInventory, TProduct } from './product.interface';
+import { TProduct } from './product.interface';
 import { Product } from './product.model';
 
 const createProduct = async (payload: TProduct) => {
@@ -29,9 +29,24 @@ const updateSingleProduct = async (id: string, updatedData: TProduct) => {
   const result = await Product.updateOne({ _id: id }, updatedData);
   return result;
 };
-const updateField = async (id: string, updatedData: TInventory) => {
+const updateProductInventory = async (id: string, updatedData: TProduct) => {
   const result = await Product.updateOne({ _id: id }, updatedData);
   return result;
+};
+const updateField = async (id: string, updatedData: number) => {
+  if (updatedData === 0) {
+    const result = await Product.updateOne(
+      { _id: id },
+      { $set: { inventory: { quantity: updatedData, inStock: true } } },
+    );
+    return result;
+  } else {
+    const result = await Product.updateOne(
+      { _id: id },
+      { $set: { inventory: { quantity: updatedData, inStock: true } } },
+    );
+    return result;
+  }
 };
 const deleteSingleProduct = async (id: string) => {
   const result = await Product.deleteOne({ _id: id });
@@ -45,4 +60,5 @@ export const productServices = {
   deleteSingleProduct,
   updateSingleProduct,
   updateField,
+  updateProductInventory,
 };

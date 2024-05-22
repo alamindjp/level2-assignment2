@@ -7,7 +7,7 @@ const createOrder = async (payload: TOrder) => {
 };
 const getAllOrder = async (email: string) => {
   if (email) {
-    const result = await Order.findOne({ email: email });
+    const result = await Order.find({ email: { $in: [email] } });
     return result;
   }
   const result = await Order.find();

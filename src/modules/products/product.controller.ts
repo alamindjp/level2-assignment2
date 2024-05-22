@@ -29,7 +29,7 @@ const getAllProducts = async (req: Request, res: Response) => {
     const searchTerm = req.query.searchTerm;
     if (searchTerm) {
       const result = await productServices.getAllProducts(searchTerm as string);
-      if (Array.isArray(result) && result.length >= 1) {
+      if (Array.isArray(result) && result.length > 0) {
         res.status(200).json({
           success: true,
           message: `Products matching search term '${searchTerm}' fetched successfully!`,
@@ -119,7 +119,8 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
       res.status(200).json({
         success: true,
         message: 'Product deleted successfully!',
-        data: result,
+        result: result,
+        data: null,
       });
     } else {
       return res.status(400).json({
@@ -131,7 +132,7 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: err,
+      error: err.massage,
     });
   }
 };

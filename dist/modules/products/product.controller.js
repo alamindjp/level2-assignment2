@@ -41,7 +41,7 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const searchTerm = req.query.searchTerm;
         if (searchTerm) {
             const result = yield product_service_1.productServices.getAllProducts(searchTerm);
-            if (Array.isArray(result) && result.length >= 1) {
+            if (Array.isArray(result) && result.length > 0) {
                 res.status(200).json({
                     success: true,
                     message: `Products matching search term '${searchTerm}' fetched successfully!`,
@@ -136,7 +136,8 @@ const deleteSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
             res.status(200).json({
                 success: true,
                 message: 'Product deleted successfully!',
-                data: result,
+                result: result,
+                data: null,
             });
         }
         else {
@@ -150,7 +151,7 @@ const deleteSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(500).json({
             success: false,
             message: 'Something went wrong',
-            error: err,
+            error: err.massage,
         });
     }
 });
