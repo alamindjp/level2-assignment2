@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
 import { orderServices } from './order.services';
+import zodValidationOrder from './order.validation';
 
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
-    const result = await orderServices.createOrder(orderData);
+
+    const validOrderData = zodValidationOrder.parse(orderData);
+    const result = await orderServices.createOrder(validOrderData);
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',

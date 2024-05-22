@@ -13,7 +13,7 @@ const productSchema = new Schema<TProduct>({
   tags: { type: [String], require: true },
   variants: [variantsSchema],
   inventory: {
-    quantity: { type: String, require: true },
+    quantity: { type: Number, require: true },
     inStock: { type: String, require: true },
   },
 });
