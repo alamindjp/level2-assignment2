@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.orderControllers = void 0;
 const order_services_1 = require("./order.services");
 const order_validation_1 = __importDefault(require("./order.validation"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderData = req.body;
@@ -25,6 +26,7 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             message: 'Order created successfully!',
             data: result,
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
         res.status(500).json({
@@ -42,6 +44,34 @@ const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             message: 'Orders fetched successfully!',
             data: result,
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Orders not found',
+            error: err,
+        });
+    }
+});
+const getSingleOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        if (mongoose_1.default.Types.ObjectId.isValid(orderId)) {
+            const result = yield order_services_1.orderServices.getSingleOrder(orderId);
+            res.status(200).json({
+                success: true,
+                message: 'Order fetched successfully!',
+                data: result,
+            });
+        }
+        else {
+            res.status(400).json({
+                success: false,
+                massage: 'Invalid order ID',
+            });
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
         res.status(500).json({
@@ -54,4 +84,5 @@ const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.orderControllers = {
     createOrder,
     getAllOrder,
+    getSingleOrder,
 };

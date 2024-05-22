@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { productServices } from './product.service';
 import mongoose from 'mongoose';
@@ -13,7 +14,8 @@ const createProduct = async (req: Request, res: Response) => {
       message: 'Product created successfully!',
       data: result,
     });
-  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
@@ -30,7 +32,8 @@ const getAllProducts = async (req: Request, res: Response) => {
       message: 'Products fetched successfully!',
       data: result,
     });
-  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
@@ -42,13 +45,21 @@ const getAllProducts = async (req: Request, res: Response) => {
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    const result = await productServices.getSingleProduct(productId);
-    res.status(200).json({
-      success: true,
-      message: 'Product fetched successfully!',
-      data: result,
-    });
-  } catch (err) {
+    if (mongoose.Types.ObjectId.isValid(productId)) {
+      const result = await productServices.getSingleProduct(productId);
+      res.status(200).json({
+        success: true,
+        message: 'Product fetched successfully!',
+        data: result,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        massage: 'Invalid product ID',
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
@@ -81,13 +92,20 @@ const updateSingleProduct = async (req: Request, res: Response) => {
 const deleteSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    const result = await productServices.deleteSingleProduct(productId);
-    res.status(200).json({
-      success: true,
-      message: 'Product deleted successfully!',
-      data: result,
-    });
-  } catch (err) {
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      const result = await productServices.deleteSingleProduct(productId);
+      res.status(200).json({
+        success: true,
+        message: 'Product deleted successfully!',
+        data: result,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        massage: 'Invalid product ID',
+      });
+    }
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',

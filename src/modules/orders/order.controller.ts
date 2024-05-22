@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { orderServices } from './order.services';
 import zodValidationOrder from './order.validation';
+import mongoose from 'mongoose';
 
 const createOrder = async (req: Request, res: Response) => {
   try {
@@ -13,7 +14,8 @@ const createOrder = async (req: Request, res: Response) => {
       message: 'Order created successfully!',
       data: result,
     });
-  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
@@ -29,7 +31,34 @@ const getAllOrder = async (req: Request, res: Response) => {
       message: 'Orders fetched successfully!',
       data: result,
     });
-  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Orders not found',
+      error: err,
+    });
+  }
+};
+
+const getSingleOrder = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    if (mongoose.Types.ObjectId.isValid(orderId)) {
+      const result = await orderServices.getSingleOrder(orderId);
+      res.status(200).json({
+        success: true,
+        message: 'Order fetched successfully!',
+        data: result,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        massage: 'Invalid order ID',
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Order not found',
@@ -41,4 +70,5 @@ const getAllOrder = async (req: Request, res: Response) => {
 export const orderControllers = {
   createOrder,
   getAllOrder,
+  getSingleOrder,
 };

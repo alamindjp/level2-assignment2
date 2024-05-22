@@ -26,6 +26,7 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             message: 'Product created successfully!',
             data: result,
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
         res.status(500).json({
@@ -43,6 +44,7 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
             message: 'Products fetched successfully!',
             data: result,
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
         res.status(500).json({
@@ -55,12 +57,21 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
 const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { productId } = req.params;
-        const result = yield product_service_1.productServices.getSingleProduct(productId);
-        res.status(200).json({
-            success: true,
-            message: 'Product fetched successfully!',
-            data: result,
-        });
+        if (mongoose_1.default.Types.ObjectId.isValid(productId)) {
+            const result = yield product_service_1.productServices.getSingleProduct(productId);
+            res.status(200).json({
+                success: true,
+                message: 'Product fetched successfully!',
+                data: result,
+            });
+        }
+        else {
+            return res.status(400).json({
+                success: false,
+                massage: 'Invalid product ID',
+            });
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
         res.status(500).json({
@@ -95,12 +106,20 @@ const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
 const deleteSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { productId } = req.params;
-        const result = yield product_service_1.productServices.deleteSingleProduct(productId);
-        res.status(200).json({
-            success: true,
-            message: 'Product deleted successfully!',
-            data: result,
-        });
+        if (!mongoose_1.default.Types.ObjectId.isValid(productId)) {
+            const result = yield product_service_1.productServices.deleteSingleProduct(productId);
+            res.status(200).json({
+                success: true,
+                message: 'Product deleted successfully!',
+                data: result,
+            });
+        }
+        else {
+            return res.status(400).json({
+                success: false,
+                massage: 'Invalid product ID',
+            });
+        }
     }
     catch (err) {
         res.status(500).json({

@@ -19,7 +19,12 @@ const getAllOrder = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_model_1.Order.find();
     return result;
 });
+const getSingleOrder = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield order_model_1.Order.findById(id);
+    return result;
+});
 exports.orderServices = {
     createOrder,
     getAllOrder,
+    getSingleOrder,
 };
