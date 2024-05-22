@@ -14,6 +14,10 @@ const getSingleProduct = async (id: string) => {
   const result = await Product.findById(id);
   return result;
 };
+const updateSingleProduct = async (id: string, updatedData: TProduct) => {
+  const result = await Product.updateOne({ _id: id }, updatedData);
+  return result;
+};
 const deleteSingleProduct = async (id: string) => {
   const result = await Product.deleteOne({ _id: id });
   return result;
@@ -24,4 +28,5 @@ export const productServices = {
   getAllProducts,
   getSingleProduct,
   deleteSingleProduct,
+  updateSingleProduct,
 };

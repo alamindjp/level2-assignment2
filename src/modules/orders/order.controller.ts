@@ -29,7 +29,7 @@ const getAllOrder = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: 'Order not found',
       error: err,
     });
   }

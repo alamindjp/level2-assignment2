@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { productServices } from './product.service';
+import mongoose from 'mongoose';
 
 const createProduct = async (req: Request, res: Response) => {
   try {
@@ -53,6 +54,27 @@ const getSingleProduct = async (req: Request, res: Response) => {
     });
   }
 };
+const updateSingleProduct = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+    const updatedData = req.body;
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ error: 'Invalid product ID' });
+    }
+    await productServices.updateSingleProduct(productId, updatedData);
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully!',
+      data: updatedData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
+  }
+};
 
 const deleteSingleProduct = async (req: Request, res: Response) => {
   try {
@@ -77,4 +99,5 @@ export const productControllers = {
   getAllProducts,
   getSingleProduct,
   deleteSingleProduct,
+  updateSingleProduct,
 };
