@@ -1,12 +1,11 @@
-import { Request, Response } from 'express';
 import { orderServices } from './order.services';
+import { Request, Response } from 'express';
 import zodValidationOrder from './order.validation';
 import mongoose from 'mongoose';
 
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
-
     const validOrderData = zodValidationOrder.parse(orderData);
     const result = await orderServices.createOrder(validOrderData);
     res.status(200).json({
@@ -25,18 +24,28 @@ const createOrder = async (req: Request, res: Response) => {
 };
 const getAllOrder = async (req: Request, res: Response) => {
   try {
-    const result = await orderServices.getAllOrder();
-    res.status(200).json({
-      success: true,
-      message: 'Orders fetched successfully!',
-      data: result,
-    });
+    const { email } = req.query;
+    if (email) {
+      const result = await orderServices.getAllOrder(email as string);
+      return res.status(400).json({
+        success: true,
+        message: `Orders fetched successfully for user email: ${email}!`,
+        data: result,
+      });
+    } else {
+      const result = await orderServices.getAllOrder(email as string);
+      return res.status(400).json({
+        success: true,
+        message: `Orders fetched successfully!`,
+        data: result,
+      });
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Orders not found',
-      error: err,
+      error: err.massage,
     });
   }
 };

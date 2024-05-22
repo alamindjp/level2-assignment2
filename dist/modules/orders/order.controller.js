@@ -38,19 +38,30 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield order_services_1.orderServices.getAllOrder();
-        res.status(200).json({
-            success: true,
-            message: 'Orders fetched successfully!',
-            data: result,
-        });
+        const { email } = req.query;
+        if (email) {
+            const result = yield order_services_1.orderServices.getAllOrder(email);
+            return res.status(400).json({
+                success: true,
+                message: `Orders fetched successfully for user email: ${email}!`,
+                data: result,
+            });
+        }
+        else {
+            const result = yield order_services_1.orderServices.getAllOrder(email);
+            return res.status(400).json({
+                success: true,
+                message: `Orders fetched successfully!`,
+                data: result,
+            });
+        }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
         res.status(500).json({
             success: false,
             message: 'Orders not found',
-            error: err,
+            error: err.massage,
         });
     }
 });

@@ -38,12 +38,32 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield product_service_1.productServices.getAllProducts();
-        res.status(200).json({
-            success: true,
-            message: 'Products fetched successfully!',
-            data: result,
-        });
+        const searchTerm = req.query.searchTerm;
+        if (searchTerm) {
+            const result = yield product_service_1.productServices.getAllProducts(searchTerm);
+            if (Array.isArray(result) && result.length >= 1) {
+                res.status(200).json({
+                    success: true,
+                    message: `Products matching search term '${searchTerm}' fetched successfully!`,
+                    data: result,
+                });
+            }
+            else {
+                res.status(400).json({
+                    success: false,
+                    message: `Products matching search term '${searchTerm}' not found`,
+                    data: result,
+                });
+            }
+        }
+        else {
+            const result = yield product_service_1.productServices.getAllProducts(searchTerm);
+            res.status(200).json({
+                success: true,
+                message: 'Products fetched successfully!',
+                data: result,
+            });
+        }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
@@ -85,15 +105,20 @@ const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
     try {
         const { productId } = req.params;
         const updatedData = req.body;
-        if (!mongoose_1.default.Types.ObjectId.isValid(productId)) {
-            return res.status(400).json({ error: 'Invalid product ID' });
+        if (mongoose_1.default.Types.ObjectId.isValid(productId)) {
+            yield product_service_1.productServices.updateSingleProduct(productId, updatedData);
+            res.status(200).json({
+                success: true,
+                message: 'Product updated successfully!',
+                data: updatedData,
+            });
         }
-        yield product_service_1.productServices.updateSingleProduct(productId, updatedData);
-        res.status(200).json({
-            success: true,
-            message: 'Product updated successfully!',
-            data: updatedData,
-        });
+        else {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid product ID',
+            });
+        }
     }
     catch (err) {
         res.status(500).json({
@@ -106,7 +131,7 @@ const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
 const deleteSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { productId } = req.params;
-        if (!mongoose_1.default.Types.ObjectId.isValid(productId)) {
+        if (mongoose_1.default.Types.ObjectId.isValid(productId)) {
             const result = yield product_service_1.productServices.deleteSingleProduct(productId);
             res.status(200).json({
                 success: true,

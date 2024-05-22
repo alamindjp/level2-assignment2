@@ -26,12 +26,30 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await productServices.getAllProducts();
-    res.status(200).json({
-      success: true,
-      message: 'Products fetched successfully!',
-      data: result,
-    });
+    const searchTerm = req.query.searchTerm;
+    if (searchTerm) {
+      const result = await productServices.getAllProducts(searchTerm as string);
+      if (Array.isArray(result) && result.length >= 1) {
+        res.status(200).json({
+          success: true,
+          message: `Products matching search term '${searchTerm}' fetched successfully!`,
+          data: result,
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          message: `Products matching search term '${searchTerm}' not found`,
+          data: result,
+        });
+      }
+    } else {
+      const result = await productServices.getAllProducts(searchTerm as string);
+      res.status(200).json({
+        success: true,
+        message: 'Products fetched successfully!',
+        data: result,
+      });
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
@@ -71,15 +89,19 @@ const updateSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const updatedData = req.body;
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      return res.status(400).json({ error: 'Invalid product ID' });
+    if (mongoose.Types.ObjectId.isValid(productId)) {
+      await productServices.updateSingleProduct(productId, updatedData);
+      res.status(200).json({
+        success: true,
+        message: 'Product updated successfully!',
+        data: updatedData,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid product ID',
+      });
     }
-    await productServices.updateSingleProduct(productId, updatedData);
-    res.status(200).json({
-      success: true,
-      message: 'Product updated successfully!',
-      data: updatedData,
-    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -92,7 +114,7 @@ const updateSingleProduct = async (req: Request, res: Response) => {
 const deleteSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
+    if (mongoose.Types.ObjectId.isValid(productId)) {
       const result = await productServices.deleteSingleProduct(productId);
       res.status(200).json({
         success: true,

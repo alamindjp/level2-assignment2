@@ -1,4 +1,4 @@
-import { TProduct } from './product.interface';
+import { TInventory, TProduct } from './product.interface';
 import { Product } from './product.model';
 
 const createProduct = async (payload: TProduct) => {
@@ -6,15 +6,30 @@ const createProduct = async (payload: TProduct) => {
   return result;
 };
 
-const getAllProducts = async () => {
-  const result = await Product.find();
-  return result;
+const getAllProducts = async (searchTerm: string) => {
+  if (searchTerm) {
+    const result = await Product.find({
+      $or: [
+        { name: { $regex: searchTerm, $options: 'i' } },
+        { description: { $regex: searchTerm, $options: 'i' } },
+        { category: { $regex: searchTerm, $options: 'i' } },
+      ],
+    });
+    return result;
+  } else {
+    const result = await Product.find();
+    return result;
+  }
 };
 const getSingleProduct = async (id: string) => {
   const result = await Product.findById(id);
   return result;
 };
 const updateSingleProduct = async (id: string, updatedData: TProduct) => {
+  const result = await Product.updateOne({ _id: id }, updatedData);
+  return result;
+};
+const updateField = async (id: string, updatedData: TInventory) => {
   const result = await Product.updateOne({ _id: id }, updatedData);
   return result;
 };
@@ -29,4 +44,5 @@ export const productServices = {
   getSingleProduct,
   deleteSingleProduct,
   updateSingleProduct,
+  updateField,
 };

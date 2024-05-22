@@ -15,15 +15,31 @@ const createProduct = (payload) => __awaiter(void 0, void 0, void 0, function* (
     const result = yield product_model_1.Product.create(payload);
     return result;
 });
-const getAllProducts = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.Product.find();
-    return result;
+const getAllProducts = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
+    if (searchTerm) {
+        const result = yield product_model_1.Product.find({
+            $or: [
+                { name: { $regex: searchTerm, $options: 'i' } },
+                { description: { $regex: searchTerm, $options: 'i' } },
+                { category: { $regex: searchTerm, $options: 'i' } },
+            ],
+        });
+        return result;
+    }
+    else {
+        const result = yield product_model_1.Product.find();
+        return result;
+    }
 });
 const getSingleProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.Product.findById(id);
     return result;
 });
 const updateSingleProduct = (id, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.Product.updateOne({ _id: id }, updatedData);
+    return result;
+});
+const updateField = (id, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.Product.updateOne({ _id: id }, updatedData);
     return result;
 });
@@ -37,4 +53,5 @@ exports.productServices = {
     getSingleProduct,
     deleteSingleProduct,
     updateSingleProduct,
+    updateField,
 };
