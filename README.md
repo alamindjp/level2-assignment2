@@ -42,3 +42,38 @@ npm run start
 ```typescript
 npm run start:dev
 ```
+
+</br>
+</br>
+</br>
+
+# routes
+
+### \* /api/products </br>
+
+method:[ post, get, put, delete ]
+
+### \* /api/products/:productId </br>
+
+method:[ get, put, delete ]
+
+### \* /api/products?searchTerm=iphone </br>
+
+method:[ get ]
+
+### \* /api/products </br>
+
+method:[ post, get ]
+
+### \* /api/orders?email=level2@programming-hero.com </br>
+
+method:[ post, get ]
+</br></br></br>
+
+# Bonuses part
+
+### \* Error Handling:
+
+### \* Inventory Update: When creating new order (/api/orders ) ,reduce the quantity of the ordered product in inventory and update the inStock property.
+
+### \* Validation with Zod: Use Zod to validate incoming data for product and order creation and updating operations.
