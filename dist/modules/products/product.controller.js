@@ -31,7 +31,7 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         res.status(500).json({
             success: false,
-            message: "Products don't created successful!",
+            message: "Product doesn't created successful",
             error: err,
         });
     }
