@@ -61,7 +61,7 @@ method:[ get, put, delete ]
 
 method:[ get ]
 
-### \* /api/products </br>
+### \* /api/orders </br>
 
 method:[ post, get ]
 
