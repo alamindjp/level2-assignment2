@@ -27,7 +27,7 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const stockQuantity = getOrderingProduct === null || getOrderingProduct === void 0 ? void 0 : getOrderingProduct.inventory.quantity;
         if (mongoose_1.default.Types.ObjectId.isValid(productId)) {
             if (inStock) {
-                if (stockQuantity > quantity) {
+                if (stockQuantity >= quantity) {
                     const validOrderData = order_validation_1.default.parse(orderData);
                     const result = yield order_services_1.orderServices.createOrder(validOrderData);
                     const updateProductQuantity = stockQuantity - quantity;
@@ -40,7 +40,7 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 }
                 else {
                     res.status(200).json({
-                        success: true,
+                        success: false,
                         message: 'Insufficient quantity available in inventory',
                         data: null,
                     });
@@ -48,7 +48,7 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             }
             else {
                 res.status(500).json({
-                    success: true,
+                    success: false,
                     message: 'Ordering products is stock out',
                     data: null,
                 });
@@ -83,7 +83,8 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = req.query;
-        if (email) {
+        // console.log(req.query);
+        if (req.query) {
             const result = yield order_services_1.orderServices.getAllOrder(email);
             return res.status(400).json({
                 success: true,

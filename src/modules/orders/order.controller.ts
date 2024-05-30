@@ -16,7 +16,7 @@ const createOrder = async (req: Request, res: Response) => {
     const stockQuantity = getOrderingProduct?.inventory.quantity as number;
     if (mongoose.Types.ObjectId.isValid(productId)) {
       if (inStock) {
-        if (stockQuantity > quantity) {
+        if (stockQuantity >= quantity) {
           const validOrderData = zodValidationOrder.parse(orderData);
           const result = await orderServices.createOrder(validOrderData);
           const updateProductQuantity = stockQuantity - quantity;
@@ -29,14 +29,14 @@ const createOrder = async (req: Request, res: Response) => {
           });
         } else {
           res.status(200).json({
-            success: true,
+            success: false,
             message: 'Insufficient quantity available in inventory',
             data: null,
           });
         }
       } else {
         res.status(500).json({
-          success: true,
+          success: false,
           message: 'Ordering products is stock out',
           data: null,
         });
@@ -69,7 +69,8 @@ const createOrder = async (req: Request, res: Response) => {
 const getAllOrder = async (req: Request, res: Response) => {
   try {
     const { email } = req.query;
-    if (email) {
+    // console.log(req.query);
+    if (req.query) {
       const result = await orderServices.getAllOrder(email as string);
       return res.status(400).json({
         success: true,
