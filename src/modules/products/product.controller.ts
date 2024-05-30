@@ -18,7 +18,7 @@ const createProduct = async (req: Request, res: Response) => {
   } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: "Products don't created successful!",
       error: err,
     });
   }
