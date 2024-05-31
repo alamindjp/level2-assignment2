@@ -6,23 +6,14 @@ const mongoose_1 = require("mongoose");
 //   type: { type: String, required: [true, 'Type is required'] },
 //   value: { type: String, required: [true, 'Value is required'] },
 // });
-const inventorySchema = new mongoose_1.Schema({
-    quantity: { type: Number, required: [true, 'Quantity is required'] },
-    inStock: { type: Boolean, required: [true, 'inStock is required'] },
-});
+// const inventorySchema = new Schema<TInventory>({
+//   quantity: { type: Number, required: [true, 'Quantity is required'] },
+//   inStock: { type: Boolean, required: [true, 'inStock is required'] },
+// });
 const productSchema = new mongoose_1.Schema({
-    // name: { type: String, required: [true, 'Name is required'] },
-    // description: { type: String, required: [true, 'Description is required'] },
-    // price: { type: Number, required: [true, 'Price is required'] },
-    // category: { type: String, required: [true, 'Category is required'] },
-    // tags: { type: [String], required: [true, 'tags are required'] },
-    // variants: {
-    //   type: [variantSchema],
-    //   required: [true, 'Variants are required'],
-    // },
-    inventory: {
-        type: inventorySchema,
-        required: [true, 'Inventory is required'],
-    },
+    email: { type: String, required: true },
+    productId: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
 });
 exports.Product = (0, mongoose_1.model)('Product', productSchema);
