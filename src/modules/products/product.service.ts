@@ -13,7 +13,6 @@ const getAllProducts = async (searchTerm: string) => {
         { name: { $regex: searchTerm, $options: 'i' } },
         { description: { $regex: searchTerm, $options: 'i' } },
         { category: { $regex: searchTerm, $options: 'i' } },
-        { tags: { $regex: searchTerm, $options: 'i' } },
       ],
     });
     return result;
@@ -37,7 +36,7 @@ const updateProductInventory = async (id: string, updatedData: TProduct) => {
 const updateField = async (id: string, updatedData: number) => {
   if (updatedData === 0) {
     const result = await Product.updateOne(
-      { id },
+      { _id: id },
       { $set: { inventory: { quantity: updatedData, inStock: false } } },
     );
     return result;

@@ -22,7 +22,6 @@ const getAllProducts = (searchTerm) => __awaiter(void 0, void 0, void 0, functio
                 { name: { $regex: searchTerm, $options: 'i' } },
                 { description: { $regex: searchTerm, $options: 'i' } },
                 { category: { $regex: searchTerm, $options: 'i' } },
-                { tags: { $regex: searchTerm, $options: 'i' } },
             ],
         });
         return result;
@@ -46,7 +45,7 @@ const updateProductInventory = (id, updatedData) => __awaiter(void 0, void 0, vo
 });
 const updateField = (id, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
     if (updatedData === 0) {
-        const result = yield product_model_1.Product.updateOne({ id }, { $set: { inventory: { quantity: updatedData, inStock: false } } });
+        const result = yield product_model_1.Product.updateOne({ _id: id }, { $set: { inventory: { quantity: updatedData, inStock: false } } });
         return result;
     }
     else {
