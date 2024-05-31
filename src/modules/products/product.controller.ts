@@ -7,13 +7,22 @@ import zodValidationProduct from './product.validation';
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-    const zodValidationData = await zodValidationProduct.parse(productData);
-    const result = await productServices.createProduct(zodValidationData);
-    res.status(200).json({
-      success: true,
-      message: 'Product created successfully!',
-      data: result,
-    });
+    const zodValidationData = zodValidationProduct.parse(productData);
+    try {
+      const result = await productServices.createProduct(zodValidationData);
+      res.status(200).json({
+        success: true,
+        message: 'Product created successfully!',
+        data: result,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(200).json({
+        success: true,
+        message: 'product not validity checking',
+        error: err,
+      });
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.log(err);
