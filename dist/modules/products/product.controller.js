@@ -15,11 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.productControllers = void 0;
 const product_service_1 = require("./product.service");
 const mongoose_1 = __importDefault(require("mongoose"));
-const product_validation_1 = __importDefault(require("./product.validation"));
+// import zodValidationProduct from './product.validation';
+const order_validation_1 = __importDefault(require("../orders/order.validation"));
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productData = req.body;
-        const zodValidationData = product_validation_1.default.parse(productData);
+        const zodValidationData = order_validation_1.default.parse(productData);
         const result = yield product_service_1.productServices.createProduct(zodValidationData);
         res.status(200).json({
             success: true,
