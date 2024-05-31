@@ -29,11 +29,11 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
-        console.log(err);
+        console.log(err.massage);
         res.status(500).json({
             success: false,
             message: "Product doesn't created successful",
-            error: err,
+            error: err.massage,
         });
     }
 });
