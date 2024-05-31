@@ -22,6 +22,7 @@ const getAllProducts = (searchTerm) => __awaiter(void 0, void 0, void 0, functio
                 { name: { $regex: searchTerm, $options: 'i' } },
                 { description: { $regex: searchTerm, $options: 'i' } },
                 { category: { $regex: searchTerm, $options: 'i' } },
+                { tags: { $regex: searchTerm, $options: 'i' } },
             ],
         });
         return result;
