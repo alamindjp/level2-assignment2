@@ -73,7 +73,6 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: 'Something went wrong',
@@ -116,7 +115,7 @@ const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).json({
             success: false,
             message: 'Orders not found',
-            error: err,
+            error: err.massage,
         });
     }
 });

@@ -59,7 +59,6 @@ const createOrder = async (req: Request, res: Response) => {
     // });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    console.log(err);
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
@@ -99,7 +98,7 @@ const getAllOrder = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Orders not found',
-      error: err,
+      error: err.massage,
     });
   }
 };
