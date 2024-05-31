@@ -1,5 +1,3 @@
-export type TTags = string;
-
 export type TVariants = {
   type: string;
   value: string;

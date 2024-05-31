@@ -8,25 +8,16 @@ const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
     const zodValidationData = zodValidationProduct.parse(productData);
-    try {
-      const result = await productServices.createProduct(zodValidationData);
-      res.status(200).json({
-        success: true,
-        message: 'Product created successfully!',
-        data: result,
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(200).json({
-        success: true,
-        message: 'product not validity checking',
-        error: err,
-      });
-    }
+    const result = await productServices.createProduct(zodValidationData);
+    res.status(200).json({
+      success: true,
+      message: 'Product created successfully!',
+      data: result,
+    });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.log(err);
-    res.status(500).json({
+    res.status(400).json({
       success: false,
       message: "Product doesn't created successful",
       error: err,

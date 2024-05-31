@@ -20,27 +20,17 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const productData = req.body;
         const zodValidationData = product_validation_1.default.parse(productData);
-        try {
-            const result = yield product_service_1.productServices.createProduct(zodValidationData);
-            res.status(200).json({
-                success: true,
-                message: 'Product created successfully!',
-                data: result,
-            });
-        }
-        catch (err) {
-            console.log(err);
-            res.status(200).json({
-                success: true,
-                message: 'product not validity checking',
-                error: err,
-            });
-        }
+        const result = yield product_service_1.productServices.createProduct(zodValidationData);
+        res.status(200).json({
+            success: true,
+            message: 'Product created successfully!',
+            data: result,
+        });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (err) {
         console.log(err);
-        res.status(500).json({
+        res.status(400).json({
             success: false,
             message: "Product doesn't created successful",
             error: err,
