@@ -7,7 +7,7 @@ import zodValidationProduct from './product.validation';
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-    const zodValidationData = zodValidationProduct.parse(productData);
+    const zodValidationData = await zodValidationProduct.parse(productData);
     const result = await productServices.createProduct(zodValidationData);
     res.status(200).json({
       success: true,
