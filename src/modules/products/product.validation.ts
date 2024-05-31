@@ -9,16 +9,16 @@ const zodValidationProduct = z.object({
     required_error: 'Description is required',
     invalid_type_error: 'Description must be a string',
   }),
-  price: z
-    .number({
-      required_error: 'Price is required',
-      invalid_type_error: 'Price must be a number',
-    })
-    .positive({ message: 'Price must be a positive number' }),
-  category: z.string({
-    required_error: 'Category is required',
-    invalid_type_error: 'Category must be a string',
-  }),
+  // price: z
+  //   .number({
+  //     required_error: 'Price is required',
+  //     invalid_type_error: 'Price must be a number',
+  //   })
+  //   .positive({ message: 'Price must be a positive number' }),
+  // category: z.string({
+  //   required_error: 'Category is required',
+  //   invalid_type_error: 'Category must be a string',
+  // }),
   // tags: z.string().array().nonempty({
   //   message: "Tags Can't be empty!",
   // }),
