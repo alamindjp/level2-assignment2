@@ -46,7 +46,7 @@ const updateProductInventory = (id, updatedData) => __awaiter(void 0, void 0, vo
 });
 const updateField = (id, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
     if (updatedData === 0) {
-        const result = yield product_model_1.Product.updateOne({ _id: id }, { $set: { inventory: { quantity: updatedData, inStock: true } } });
+        const result = yield product_model_1.Product.updateOne({ id }, { $set: { inventory: { quantity: updatedData, inStock: false } } });
         return result;
     }
     else {

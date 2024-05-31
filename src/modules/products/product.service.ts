@@ -37,8 +37,8 @@ const updateProductInventory = async (id: string, updatedData: TProduct) => {
 const updateField = async (id: string, updatedData: number) => {
   if (updatedData === 0) {
     const result = await Product.updateOne(
-      { _id: id },
-      { $set: { inventory: { quantity: updatedData, inStock: true } } },
+      { id },
+      { $set: { inventory: { quantity: updatedData, inStock: false } } },
     );
     return result;
   } else {
