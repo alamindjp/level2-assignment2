@@ -14,7 +14,7 @@ export type TProduct = {
   description: string;
   price: number;
   category: string;
-  tags: string[];
-  variants: TVariants[];
-  inventory: TInventory;
+  // tags: string[];
+  // variants: TVariants[];
+  // inventory: TInventory;
 };
