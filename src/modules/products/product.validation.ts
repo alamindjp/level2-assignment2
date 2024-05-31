@@ -1,10 +1,5 @@
 import { z } from 'zod';
 
-// const tag = z.string({
-//   required_error: 'Tags is required',
-//   invalid_type_error: 'Tags must be a array of string',
-// });
-
 const zodValidationProduct = z.object({
   name: z.string({
     required_error: 'Name is required',

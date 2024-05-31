@@ -1,10 +1,30 @@
 import { z } from 'zod';
 
 const zodValidationOrder = z.object({
-  email: z.string().email(),
-  productId: z.string(),
-  price: z.number().gte(10, { message: 'Order Price value minimum 10' }),
-  quantity: z.number().gte(1, { message: 'Order Quantity value minimum 1' }),
+  email: z
+    .string({
+      required_error: 'Email is required',
+      invalid_type_error: 'Email must be a string',
+    })
+    .email({
+      message: 'Email must be a email',
+    }),
+  productId: z.string({
+    required_error: 'ProductId is required',
+    invalid_type_error: 'ProductId must be a string',
+  }),
+  price: z
+    .number({
+      required_error: 'Price is required',
+      invalid_type_error: 'Price must be a number',
+    })
+    .positive({ message: 'Price must be a positive number' }),
+  quantity: z
+    .number({
+      required_error: 'Quantity is required',
+      invalid_type_error: 'Quantity must be a number',
+    })
+    .positive({ message: 'Price must be a positive number' }),
 });
 
 export default zodValidationOrder;

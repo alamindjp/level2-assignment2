@@ -1,10 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const zod_1 = require("zod");
-// const tag = z.string({
-//   required_error: 'Tags is required',
-//   invalid_type_error: 'Tags must be a array of string',
-// });
 const zodValidationProduct = zod_1.z.object({
     name: zod_1.z.string({
         required_error: 'Name is required',

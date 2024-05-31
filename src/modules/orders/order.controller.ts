@@ -62,35 +62,43 @@ const createOrder = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: err.massage,
+      error: err,
     });
   }
 };
 const getAllOrder = async (req: Request, res: Response) => {
   try {
     const { email } = req.query;
-    // console.log(req.query);
-    if (req.query) {
+    console.log(req.query);
+    if (email) {
       const result = await orderServices.getAllOrder(email as string);
-      return res.status(400).json({
+      return res.status(200).json({
         success: true,
         message: `Orders fetched successfully for user email: ${email}!`,
         data: result,
       });
     } else {
       const result = await orderServices.getAllOrder(email as string);
-      return res.status(400).json({
-        success: true,
-        message: `Orders fetched successfully!`,
-        data: result,
-      });
+      if (result.length > 0) {
+        return res.status(400).json({
+          success: true,
+          message: `Orders fetched successfully!`,
+          data: result,
+        });
+      } else {
+        return res.status(400).json({
+          success: true,
+          message: `Orders not found!`,
+          data: result,
+        });
+      }
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Orders not found',
-      error: err.massage,
+      error: err,
     });
   }
 };
