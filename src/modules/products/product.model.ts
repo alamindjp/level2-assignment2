@@ -11,10 +11,13 @@ import { TProduct } from './product.interface';
 //   inStock: { type: Boolean, required: true },
 // });
 const productSchema = new Schema<TProduct>({
-  email: { type: String, required: true },
-  productId: { type: String, required: true },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
   price: { type: Number, required: true },
-  quantity: { type: Number, required: true },
+  category: { type: String, required: true },
+  // tags: { type: [String], required: true },
+  // variants: { type: [variantSchema], required: true },
+  // inventory: { type: inventorySchema, required: true },
 });
 
 export const Product = model<TProduct>('Product', productSchema);

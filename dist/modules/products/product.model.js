@@ -11,9 +11,12 @@ const mongoose_1 = require("mongoose");
 //   inStock: { type: Boolean, required: true },
 // });
 const productSchema = new mongoose_1.Schema({
-    email: { type: String, required: true },
-    productId: { type: String, required: true },
+    name: { type: String, required: true },
+    description: { type: String, required: true },
     price: { type: Number, required: true },
-    quantity: { type: Number, required: true },
+    category: { type: String, required: true },
+    // tags: { type: [String], required: true },
+    // variants: { type: [variantSchema], required: true },
+    // inventory: { type: inventorySchema, required: true },
 });
 exports.Product = (0, mongoose_1.model)('Product', productSchema);
