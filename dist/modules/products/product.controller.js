@@ -15,12 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.productControllers = void 0;
 const product_service_1 = require("./product.service");
 const mongoose_1 = __importDefault(require("mongoose"));
-const product_validation_1 = __importDefault(require("./product.validation"));
+// import zodValidationProduct from './product.validation';
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productData = req.body;
-        const zodValidationData = product_validation_1.default.parse(productData);
-        const result = yield product_service_1.productServices.createProduct(zodValidationData);
+        // const zodValidationData = zodValidationProduct.parse(productData);
+        const result = yield product_service_1.productServices.createProduct(productData);
         res.status(200).json({
             success: true,
             message: 'Product created successfully!',
@@ -30,7 +30,7 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (err) {
         console.log(err);
-        res.status(400).json({
+        res.status(500).json({
             success: false,
             message: "Product doesn't created successful",
             error: err,
