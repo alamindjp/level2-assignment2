@@ -16,11 +16,11 @@ const createProduct = async (req: Request, res: Response) => {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    console.log(err.massage);
+    console.log(err);
     res.status(500).json({
       success: false,
       message: "Product doesn't created successful",
-      error: err.massage,
+      error: err,
     });
   }
 };
