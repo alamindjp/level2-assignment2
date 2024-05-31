@@ -53,7 +53,7 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 res.status(400).json({
                     success: false,
                     message: `Products matching search term '${searchTerm}' not found`,
-                    data: result,
+                    data: null,
                 });
             }
         }

@@ -40,7 +40,7 @@ const getAllProducts = async (req: Request, res: Response) => {
         res.status(400).json({
           success: false,
           message: `Products matching search term '${searchTerm}' not found`,
-          data: result,
+          data: null,
         });
       }
     } else {
