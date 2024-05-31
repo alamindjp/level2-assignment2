@@ -14,52 +14,54 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.orderControllers = void 0;
 const order_services_1 = require("./order.services");
-// import zodValidationOrder from './order.validation';
+const order_validation_1 = __importDefault(require("./order.validation"));
 const mongoose_1 = __importDefault(require("mongoose"));
-// import { productServices } from '../products/product.service';
+const product_service_1 = require("../products/product.service");
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const orderData = req.body;
-        // const { productId } = req.body;
-        // const { quantity } = req.body;
-        // const getOrderingProduct =
-        //   await productServices.getSingleProduct(productId);
-        // const inStock = getOrderingProduct?.inventory.inStock as boolean;
-        // const stockQuantity = getOrderingProduct?.inventory.quantity as number;
-        // if (mongoose.Types.ObjectId.isValid(productId)) {
-        //   if (inStock) {
-        //     if (stockQuantity >= quantity) {
-        //       const validOrderData = zodValidationOrder.parse(orderData);
-        //       const result = await orderServices.createOrder(validOrderData);
-        //       const updateProductQuantity = stockQuantity - quantity;
-        //       await productServices.updateField(productId, updateProductQuantity);
-        //       res.status(200).json({
-        //         success: true,
-        //         message: 'Order created successfully!',
-        //         data: result,
-        //       });
-        //     } else {
-        //       res.status(200).json({
-        //         success: false,
-        //         message: 'Insufficient quantity available in inventory',
-        //         data: null,
-        //       });
-        //     }
-        //   } else {
-        //     res.status(500).json({
-        //       success: false,
-        //       message: 'Ordering products is stock out',
-        //       data: null,
-        //     });
-        //   }
-        // } else {
-        //   await productServices.getSingleProduct(productId);
-        //   res.status(500).json({
-        //     success: false,
-        //     message: 'Product not found!',
-        //     data: null,
-        //   });
-        // }
+        const orderData = req.body;
+        const { productId } = req.body;
+        const { quantity } = req.body;
+        const getOrderingProduct = yield product_service_1.productServices.getSingleProduct(productId);
+        const inStock = getOrderingProduct === null || getOrderingProduct === void 0 ? void 0 : getOrderingProduct.inventory.inStock;
+        const stockQuantity = getOrderingProduct === null || getOrderingProduct === void 0 ? void 0 : getOrderingProduct.inventory.quantity;
+        if (mongoose_1.default.Types.ObjectId.isValid(productId)) {
+            if (inStock) {
+                if (stockQuantity >= quantity) {
+                    const validOrderData = order_validation_1.default.parse(orderData);
+                    const result = yield order_services_1.orderServices.createOrder(validOrderData);
+                    const updateProductQuantity = stockQuantity - quantity;
+                    yield product_service_1.productServices.updateField(productId, updateProductQuantity);
+                    res.status(200).json({
+                        success: true,
+                        message: 'Order created successfully!',
+                        data: result,
+                    });
+                }
+                else {
+                    res.status(200).json({
+                        success: false,
+                        message: 'Insufficient quantity available in inventory',
+                        data: null,
+                    });
+                }
+            }
+            else {
+                res.status(500).json({
+                    success: false,
+                    message: 'Ordering products is stock out',
+                    data: null,
+                });
+            }
+        }
+        else {
+            yield product_service_1.productServices.getSingleProduct(productId);
+            res.status(500).json({
+                success: false,
+                message: 'Product not found!',
+                data: null,
+            });
+        }
         // const orderData = req.body;
         // const validOrderData = zodValidationOrder.parse(orderData);
         // const result = await orderServices.createOrder(validOrderData);

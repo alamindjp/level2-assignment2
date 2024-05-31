@@ -8,8 +8,11 @@ export type TInventory = {
 };
 
 export type TProduct = {
-  email: string;
-  productId: string;
+  name: string;
+  description: string;
   price: number;
-  quantity: number;
+  category: string;
+  tags: string[];
+  variants: TVariants[];
+  inventory: TInventory;
 };

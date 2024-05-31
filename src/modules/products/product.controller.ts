@@ -2,13 +2,13 @@
 import { Request, Response } from 'express';
 import { productServices } from './product.service';
 import mongoose from 'mongoose';
-import zodValidationProduct from './product.validation';
+// import zodValidationProduct from './product.validation';
 
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-    const zodValidationData = zodValidationProduct.parse(productData);
-    const result = await productServices.createProduct(zodValidationData);
+    // const zodValidationData = zodValidationProduct.parse(productData);
+    const result = await productServices.createProduct(productData);
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
